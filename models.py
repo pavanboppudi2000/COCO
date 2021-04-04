@@ -85,6 +85,7 @@ class GCNResnet(nn.Module):
         self.gc1 = GraphConvolution(in_channel, 1024)
         self.gc2 = GraphConvolution(1024, 1024)
         self.gc3 = GraphConvolution(1024, 2048)
+        self.gc4 = GraphConvolution(1024,2048)
         self.relu = nn.LeakyReLU(0.2)
         self.dropout = nn.Dropout(p=0.2)
 
