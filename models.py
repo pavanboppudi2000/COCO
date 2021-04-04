@@ -83,7 +83,7 @@ class GCNResnet(nn.Module):
         self.pooling = nn.MaxPool2d(14, 14)
 
         self.gc1 = GraphConvolution(in_channel, 1024)
-        self.gc2 = GraphConvolution(1024, 2048)
+        self.gc2 = GraphConvolution(1024, 1024)
         self.gc3 = GraphConvolution(1024, 2048)
         self.relu = nn.LeakyReLU(0.2)
         self.dropout = nn.Dropout(p=0.2)
@@ -103,16 +103,16 @@ class GCNResnet(nn.Module):
 
         inp = inp[0]
         adj = gen_adj(self.A).detach()
-        #x = self.dropout(inp)
-        x = self.gc1(inp, adj)
-        #x = self.pairNorm(x)
+        x = self.dropout(inp)
+        x = self.gc1(x, adj)
+        x = self.pairNorm(x)
         x = self.relu(x)
-        #x = self.dropout(x)
+        x = self.dropout(x)
         x = self.gc2(x, adj)
-        #x = self.pairNorm(x)
-        #x = self.relu(x)
-        #x = self.dropout(x)
-        #x = self.gc3(x, adj)
+        x = self.pairNorm(x)
+        x = self.relu(x)
+        x = self.dropout(x)
+        x = self.gc3(x, adj)
         
 
         x = x.transpose(0, 1)
